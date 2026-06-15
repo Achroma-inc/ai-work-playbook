@@ -59,19 +59,12 @@ cp "$PLAYBOOK/templates/adr/0000-template.md" docs/adr/
 導入後の運用ルール(knowledge.md と ADR の使い分け・更新方法)は
 [templates/README.md](templates/README.md) を参照。
 
-## 対応エージェント
-
-- **Claude Code(デスクトップ)** — 前提とする環境。`CLAUDE.md` を自動で読み込む。
-- **Claude Code CLI** — 同じく `CLAUDE.md` を読む。追加設定は不要。
-- **Codex / その他** — `AGENTS.md` を読むエージェントは、symlinkを張れば同じ内容を参照できる(オプション。下記参照)。
-
 ## オプション
 
-### Codex など他エージェントからも参照する
+### Codex など他エージェントからも参照する場合
 
-`AGENTS.md` を読むエージェント(Codex 等)も併用したい場合は、正本の `CLAUDE.md` に
-symlinkを張って同一実体にしておくと、同じ知識を参照できる。基本フローには含めないので、
-必要なプロジェクトでだけ実行する。
+- **Claude Code CLI** — 同じく `CLAUDE.md` を読む。追加設定は不要。
+- **Codex / その他** — `AGENTS.md` を読むエージェントは、symlinkを張れば同じルールで運用可能。
 
 ```bash
 # CLAUDE.md を正本として AGENTS.md をsymlinkで同一実体にする
