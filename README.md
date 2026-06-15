@@ -12,8 +12,9 @@ AIドリブンでチーム開発を行うための、組織共通のテンプレ
   コードを読むエージェントが自然に知識へ辿り着ける。中央集約はしない。
 - **人が一から書かない** — 知識ファイルはAIエージェントが作業の中で更新する。
   人はその差分をレビューして承認するだけ。書く負担がないので腐らない。
-- **ADRは人が指示して残す** — knowledge.md と違い、ADR は設計などが固まったタイミングで
-  人が明示的に指示して更新する。エージェントが自走で書き散らさず、意思決定が定まった節目だけ記録する。
+- **ADRもエージェントが書く** — 設計上の意思決定があれば、エージェントが自走でADRの
+  ドラフトを起こして差分提案する。人はPR/差分のレビューで内容を確認し、誤りはコミット前に正す。
+  人の起票指示を待たないので、記録漏れが起きにくい。
 - **エージェント中立** — 正本は `CLAUDE.md` だが、`AGENTS.md` のsymlinkを張ることで
   Codexなど他のコーディングエージェントからも同じ知識を参照できる。
 
@@ -21,12 +22,22 @@ AIドリブンでチーム開発を行うための、組織共通のテンプレ
 
 ```
 templates/
-├── README.md        各案件でテンプレートをどう使い、どう運用するか(人間向け)
-├── CLAUDE.md         各プロジェクトに置く正本。AI向けの運用ルールを全て含む
-├── knowledge.md      案件固有のドメイン知識を蓄積する雛形
-└── adr/
-    └── 0000-template.md   設計意思決定記録(ADR)の雛形
+├── README.md            テンプレートの使い方(配布リポジトリ内の案内)
+├── CLAUDE.md            各プロジェクトのルートに置く正本。AI向けの運用ルール(規範のみにコンパクト化)
+└── docs/
+    ├── README.md        人間向けの運用ガイド(背景・ファイルの役割・使い分け)
+    ├── knowledge.md     案件固有のドメイン知識を蓄積する雛形
+    └── adr/
+        └── 0000-template.md   設計意思決定記録(ADR)の雛形
 ```
+
+`CLAUDE.md` はエージェントが毎セッション読むため、規範だけに絞ってある。人間向けの背景・解説は
+`docs/README.md` に分離してある(導入先でも `docs/README.md` として手元に残る)。
+
+`CLAUDE.md` は導入先のルート直下に置く(Claude Code がセッション開始時に読むのはルートのみ)。
+`docs/` 配下の `knowledge.md` と ADR は、`docs/` を丸ごとコピーしてもよいし、
+導入先の既存のディレクトリ構成に合わせて配置してもよい。置き場所を変えた場合は、
+その実際のパスを `CLAUDE.md` に記載することでエージェントが辿れるようにする(後述)。
 
 横断的なノウハウ(FDEの標準フロー、クライアント対応の知恵など、特定案件に依存しない知識)は
 このリポジトリではなく **Notion の FDE Playbook** に置く。このリポジトリで版管理するのは
@@ -45,19 +56,28 @@ git clone https://github.com/Achroma-inc/ai-work-playbook.git ~/Downloads/ai-wor
 ```bash
 PLAYBOOK=~/Downloads/ai-work-playbook
 
-# 正本をコピー(Claude Code が読む)
-cp "$PLAYBOOK/templates/CLAUDE.md" ./CLAUDE.md
-
-# 案件固有知識の雛形
-cp "$PLAYBOOK/templates/knowledge.md" ./knowledge.md
-
-# ADR雛形
-mkdir -p docs/adr
-cp "$PLAYBOOK/templates/adr/0000-template.md" docs/adr/
+# 知識ファイル(knowledge.md と ADR)を docs/ ごと配置する
+cp -R "$PLAYBOOK/templates/docs" ./docs
 ```
 
-導入後の運用ルール(knowledge.md と ADR の使い分け・更新方法)は
-[templates/README.md](templates/README.md) を参照。
+`CLAUDE.md`(正本)はルート直下に置く。**既存の `CLAUDE.md` があるかどうかで手順が変わる。**
+
+- **無い場合** — そのままコピーする。
+
+  ```bash
+  cp "$PLAYBOOK/templates/CLAUDE.md" ./CLAUDE.md
+  ```
+
+- **既存の `CLAUDE.md` がある場合** — 上書きせず、**既存の内容と整合を取った上でマージする**。
+  雛形の運用ルール(knowledge.md / ADR の更新ルール、着手前に読むファイル等)を既存ファイルに
+  取り込み、矛盾する記述があれば擦り合わせる。エージェントに「雛形の内容を既存 `CLAUDE.md` に
+  マージして」と依頼すると差分を提案させられる。
+
+`docs/` を上記と違う場所に配置した場合は、`CLAUDE.md` 内の「知識ファイルの場所」に書かれた
+パスを実際の配置に合わせて書き換える(これでエージェントが正しく辿れる)。
+
+導入後の運用ガイド(knowledge.md と ADR の使い分け・人間が見るべきこと)は
+[templates/docs/README.md](templates/docs/README.md) を参照。導入先では `docs/README.md` として残る。
 
 ## オプション
 
