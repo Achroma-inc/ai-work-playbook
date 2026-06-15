@@ -54,7 +54,7 @@ cp -R "$PLAYBOOK/templates/docs" ./docs
 
 導入後の運用は [templates/docs/README.md](templates/docs/README.md)(導入先では `docs/README.md`)を参照。
 
-## グローバル CLAUDE.md(チーム共通の設定・任意)
+## グローバル CLAUDE.md(全てのプロジェクトで共通の設定・任意)
 
 このリポジトリが扱うのは **プロジェクトの** `CLAUDE.md` だが、その手前に **グローバルな**
 `CLAUDE.md` を置ける。各メンバーが自分のマシンに一度だけ設定する、全プロジェクト・全エージェント
