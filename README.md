@@ -1,6 +1,6 @@
-# ai-work-playbook
+# AI-Driven Engineering Playbook
 
-AIドリブンでチーム開発を行うための、組織共通のテンプレート集。
+AIエージェントを主体としたチーム開発を行うための、組織共通のテンプレート集。
 
 各メンバーがFDEとしてクライアントワークを進める中で得たドメイン知識や設計判断を、
 プロジェクトのGitリポジトリ内に蓄積し、新しいメンバーやエージェントが即座に
@@ -27,13 +27,13 @@ templates/
 まずこのテンプレート集をクローンする(初回のみ)。
 
 ```bash
-git clone https://github.com/Achroma-inc/ai-work-playbook.git ~/Downloads/ai-work-playbook
+git clone https://github.com/Achroma-inc/ai-driven-engineering-playbook.git ~/Downloads/ai-driven-engineering-playbook
 ```
 
 知識蓄積を始めたいプロジェクトのリポジトリのルートで、以下を実行する。
 
 ```bash
-PLAYBOOK=~/Downloads/ai-work-playbook
+PLAYBOOK=~/Downloads/ai-driven-engineering-playbook
 
 # 知識ファイル(knowledge.md と ADR)と運用ガイドを docs/ ごと配置する
 cp -R "$PLAYBOOK/templates/docs" ./docs
